@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teorie: Fundamentele Cinematicii | Fizica Clasa a X-a</title>
+    <style>
+        :root {
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --bg-sub: #0b1120;
+            --accent: #10b981;
+            --accent-blue: #38bdf8;
+            --accent-red: #f87171;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-light);
+            display: flex;
+            min-height: 100vh;
+        }
+        /* Meniu lateral identic cu restul aplicației */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-sub);
+            border-right: 1px solid var(--border);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+        .brand h2 { font-size: 1.2rem; color: var(--accent); margin-bottom: 6px; }
+        .brand p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+        .nav-links { list-style: none; margin-top: 35px; display: flex; flex-direction: column; gap: 10px; }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            padding: 12px 16px;
+            border-radius: 10px;
+            display: block;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .nav-links a:hover { background: var(--bg-card); color: var(--text-light); }
+        .nav-links a.active { background: var(--accent); color: #052e16; font-weight: 700; }
+        .footer-info { font-size: 0.78rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 15px; }
+
+        /* Zona principală */
+        .main-content { flex: 1; padding: 40px; max-width: 1000px; margin: 0 auto; }
+        .header-title { margin-bottom: 24px; }
+        .header-title h1 { font-size: 1.85rem; margin-bottom: 8px; }
+        .header-title p { color: var(--text-muted); }
+
+        /* Butoane filtrare capitole (Tab-uri) */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+        .tab-btn {
+            background: var(--bg-card);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 10px 18px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        .tab-btn:hover { color: var(--text-light); border-color: var(--accent); }
+        .tab-btn.active { background: var(--accent); color: #052e16; border-color: var(--accent); }
+
+        /* Carduri teorie */
+        .theory-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+        .theory-section h2 {
+            font-size: 1.25rem;
+            color: var(--accent);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .concepts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .concept-item {
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            padding: 14px 16px;
+            border-radius: 10px;
+            font-size: 0.94rem;
+            line-height: 1.5;
+        }
+        .concept-item strong { color: var(--accent-blue); display: block; margin-bottom: 4px; }
+
+        /* Diagramă SVG modernă */
+        .diagram-box {
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+        }
+        .diagram-box figcaption { font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; }
+
+        /* Casete de formule */
+        .formulas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            margin-top: 16px;
+        }
+        .formula-box {
+            background: var(--bg-main);
+            border-left: 4px solid var(--accent-blue);
+            padding: 14px 16px;
+            border-radius: 10px;
+        }
+        .formula-box span { font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px; }
+        .formula-box code { font-size: 1.05rem; font-weight: 700; color: var(--text-light); }
+
+        /* Problemă model interactivă */
+        .problem-card {
+            background: #064e3b33;
+            border: 1px solid #059669;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 16px;
+        }
+        .problem-card p { line-height: 1.6; margin-bottom: 14px; }
+        .toggle-sol {
+            background: var(--accent);
+            color: #052e16;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .solution-steps {
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px dashed #059669;
+            display: none;
+            line-height: 1.7;
+            color: #d1fae5;
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div>
+            <div class="brand">
+                <h2>⚛️ Fizica Clasa a X-a</h2>
+                <p>Cinematica • Modul Digital<br>Cursant: Badan Vera</p>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">🏠 Acasă</a></li>
+                <li><a href="teorie.html" class="active">📘 Teorie</a></li>
+                <li><a href="simulari.html">🔬 Simulări</a></li>
+                <li><a href="calculator.html">🧮 Calculator</a></li>
+                <li><a href="teste.html">📝 Teste</a></li>
+            </ul>
+        </div>
+        <div class="footer-info">
+            Proiect de Teză • UPS „Ion Creangă”<br>© 2026 Laborator Virtual
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="header-title">
+            <h1>Teorie: Fundamentele Cinematicii</h1>
+            <p>Selectează o secțiune sau explorează toate noțiunile, legile și formulele esențiale.</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="filtreaza('toate', this)">📚 Toate secțiunile</button>
+            <button class="tab-btn" onclick="filtreaza('sec1', this)">1. Concepte de bază</button>
+            <button class="tab-btn" onclick="filtreaza('sec2', this)">2. MRU</button>
+            <button class="tab-btn" onclick="filtreaza('sec3', this)">3. MRUV</button>
+            <button class="tab-btn" onclick="filtreaza('sec4', this)">4. Relativitate & Problemă</button>
+        </div>
+
+        <!-- Secțiunea 1 -->
+        <section class="theory-section" id="sec1">
+            <h2>1. Conceptele de Bază și Mărimile Vectoriale</h2>
+            <div class="concepts-grid">
+                <div class="concept-item">
+                    <strong>Punct Material (Corp)</strong>
+                    Corpul ale cărui dimensiuni pot fi neglijate în condițiile problemei date.
+                </div>
+                <div class="concept-item">
+                    <strong>Sistem de Referință (SR)</strong>
+                    Corpul de referință, sistemul de axe de coordonate și ceasornicul destinat măsurării timpului.
+                </div>
+                <div class="concept-item">
+                    <strong>Traiectoria</strong>
+                    Linia continuă formată din succesiunea pozițiilor ocupate de corp în timpul mișcării.
+                </div>
+                <div class="concept-item">
+                    <strong>Drumul (S)</strong>
+                    Mărime fizică scalară ce măsoară lungimea traiectoriei parcurse (S ≥ 0).
+                </div>
+                <div class="concept-item">
+                    <strong>Deplasarea (Δr)</strong>
+                    Mărime fizică vectorială ce unește poziția inițială cu cea finală a corpului.
+                </div>
+            </div>
+
+            <figure class="diagram-box">
+                <svg width="100%" height="140" viewBox="0 0 500 130">
+                    <!-- Traiectorie curbă -->
+                    <path d="M 80 95 Q 190 15, 270 65 T 420 40" fill="none" stroke="#38bdf8" stroke-width="3"/>
+                    <!-- Vector deplasare -->
+                    <defs>
+                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#f87171"/>
+                        </marker>
+                    </defs>
+                    <line x1="80" y1="95" x2="415" y2="41" stroke="#f87171" stroke-width="2.5" stroke-dasharray="6,4" marker-end="url(#arrow)"/>
+                    <!-- Punctele A și B -->
+                    <circle cx="80" cy="95" r="6" fill="#f8fafc"/>
+                    <text x="65" y="115" fill="#f8fafc" font-weight="bold" font-size="14">A</text>
+                    <circle cx="420" cy="40" r="6" fill="#f8fafc"/>
+                    <text x="428" y="35" fill="#f8fafc" font-weight="bold" font-size="14">B</text>
+                    <!-- Etichete -->
+                    <text x="210" y="25" fill="#38bdf8" font-size="13" font-weight="600">drum (traiectorie)</text>
+                    <text x="235" y="92" fill="#f87171" font-size="13" font-weight="600">deplasare (Δr)</text>
+                </svg>
+                <figcaption>Reprezentarea comparativă dintre drumul parcurs (scalar) și vectorul deplasare (Δr).</figcaption>
+            </figure>
+        </section>
+
+        <!-- Secțiunea 2 -->
+        <section class="theory-section" id="sec2">
+            <h2>2. Mișcarea Rectilinie Uniformă (MRU)</h2>
+            <p style="color: var(--text-muted);">Mișcarea pe o traiectorie dreaptă în care viteza rămâne constantă în timp (<strong>v = const</strong>).</p>
+            <div class="formulas-grid">
+                <div class="formula-box">
+                    <span>Viteza</span>
+                    <code>v = Δx / Δt = S / t</code>
+                </div>
+                <div class="formula-box">
+                    <span>Ecuația mișcării (legea coordonatei)</span>
+                    <code>x(t) = x₀ + v · t</code>
+                </div>
+            </div>
+        </section>
+
+        <!-- Secțiunea 3 -->
+        <section class="theory-section" id="sec3">
+            <h2>3. Mișcarea Rectilinie Uniform Variată (MRUV)</h2>
+            <p style="color: var(--text-muted);">Mișcarea pe o traiectorie dreaptă în care accelerația este constantă (<strong>a = const</strong>).</p>
+            <div class="formulas-grid">
+                <div class="formula-box">
+                    <span>Accelerația</span>
+                    <code>a = Δv / Δt</code>
+                </div>
+                <div class="formula-box">
+                    <span>Ecuația vitezei</span>
+                    <code>v(t) = v₀ + a · t</code>
+                </div>
+                <div class="formula-box">
+                    <span>Ecuația mișcării</span>
+                    <code>x(t) = x₀ + v₀·t + (a·t²)/2</code>
+                </div>
+                <div class="formula-box">
+                    <span>Formula lui Galilei</span>
+                    <code>v² = v₀² + 2a · Δx</code>
+                </div>
+            </div>
+        </section>
+
+        <!-- Secțiunea 4 -->
+        <section class="theory-section" id="sec4">
+            <h2>4. Relativitatea Mișcării și Problemă Model</h2>
+            <p style="color: var(--text-muted);">Starea de repaus sau de mișcare este relativă și depinde strict de sistemul de referință ales.</p>
+            <div class="problem-card">
+                <p><strong>Problemă rezolvată:</strong> Un automobil pornește din repaus (v₀ = 0) cu o accelerație constantă de a = 2 m/s². Să se determine viteza și poziția mobilului după un timp de t = 5 s.</p>
+                <button class="toggle-sol" onclick="toggleRezolvare()">👁️ Arată / Ascunde Rezolvarea</button>
+                <div class="solution-steps" id="solutie">
+                    <strong>Rezolvare pas cu pas:</strong><br>
+                    • Viteza finală: <code>v = v₀ + a · t = 0 + (2 · 5) = 10 m/s</code><br>
+                    • Distanța parcursă: <code>S = (a · t²) / 2 = (2 · 25) / 2 = 25 m</code>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function filtreaza(sectiuneId, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const sectiuni = document.querySelectorAll('.theory-section');
+            sectiuni.forEach(sec => {
+                if (sectiuneId === 'toate' || sec.id === sectiuneId) {
+                    sec.style.display = 'block';
+                } else {
+                    sec.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleRezolvare() {
+            const sol = document.getElementById('solutie');
+            sol.style.display = (sol.style.display === 'block') ? 'none' : 'block';
+        }
+    </script>
+</body>
+</html>

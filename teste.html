@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluare Interactivă | Fizica Clasa a X-a</title>
+    <style>
+        :root {
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --accent: #10b981;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --correct: #065f46;
+            --wrong: #7f1d1d;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-light);
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 260px;
+            background: #0b1120;
+            border-right: 1px solid var(--border);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .brand h2 { font-size: 1.2rem; color: var(--accent); margin-bottom: 6px; }
+        .brand p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+        .nav-links { list-style: none; margin-top: 35px; display: flex; flex-direction: column; gap: 10px; }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            padding: 12px 16px;
+            border-radius: 10px;
+            display: block;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .nav-links a:hover { background: var(--bg-card); color: var(--text-light); }
+        .nav-links a.active { background: var(--accent); color: #052e16; font-weight: 700; }
+        .footer-info { font-size: 0.78rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 15px; }
+
+        .main-content { flex: 1; padding: 40px; max-width: 900px; margin: 0 auto; }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .score-badge {
+            background: var(--bg-card);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-weight: 700;
+        }
+        .question-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 18px;
+            transition: 0.3s;
+        }
+        .question-card h3 { font-size: 1.05rem; margin-bottom: 14px; color: #e2e8f0; }
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            background: #0f172a;
+            border: 1px solid transparent;
+        }
+        .option:hover { border-color: var(--border); }
+        .btn-group { display: flex; gap: 12px; margin-top: 25px; }
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        .btn-submit { background: var(--accent); color: #052e16; }
+        .btn-reset { background: var(--bg-card); color: var(--text-light); border: 1px solid var(--border); }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div>
+            <div class="brand">
+                <h2>⚛️ Fizica Clasa a X-a</h2>
+                <p>Cinematica • Modul Digital<br>Cursant: Badan Vera</p>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">🏠 Acasă</a></li>
+                <li><a href="teorie.html">📘 Teorie</a></li>
+                <li><a href="simulari.html">🔬 Simulări</a></li>
+                <li><a href="calculator.html">🧮 Calculator</a></li>
+                <li><a href="teste.html" class="active">📝 Teste</a></li>
+            </ul>
+        </div>
+        <div class="footer-info">
+            Proiect de Teză • UPS „Ion Creangă”<br>© 2026 Laborator Virtual
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="top-bar">
+            <div>
+                <h1>Evaluare Interactivă – Cinematica</h1>
+                <p style="color: var(--text-muted); margin-top: 4px;">Selectează varianta corectă pentru fiecare item.</p>
+            </div>
+            <div class="score-badge" id="scor-afisat">Scor: 0 / 5 | Nota: -</div>
+        </div>
+
+        <form id="quizForm">
+            <div class="question-card" id="card-q1">
+                <h3>1. Mărimea fizică vectorială ce unește poziția inițială cu cea finală a corpului se numește:</h3>
+                <label class="option"><input type="radio" name="q1" value="a"> a) Traiectorie</label>
+                <label class="option"><input type="radio" name="q1" value="b"> b) Drum parcurs (S)</label>
+                <label class="option"><input type="radio" name="q1" value="c"> c) Vector deplasare (Δr)</label>
+            </div>
+
+            <div class="question-card" id="card-q2">
+                <h3>2. În Mișcarea Rectilinie Uniformă (MRU), ce proprietate are viteza corpului?</h3>
+                <label class="option"><input type="radio" name="q2" value="a"> a) Crește uniform în timp</label>
+                <label class="option"><input type="radio" name="q2" value="b"> b) Este constantă (v = const)</label>
+                <label class="option"><input type="radio" name="q2" value="c"> c) Este egală cu zero</label>
+            </div>
+
+            <div class="question-card" id="card-q3">
+                <h3>3. Un corp pornește din repaus (v₀ = 0) cu o accelerație a = 2 m/s². Ce viteză va avea după t = 5 s?</h3>
+                <label class="option"><input type="radio" name="q3" value="a"> a) 10 m/s</label>
+                <label class="option"><input type="radio" name="q3" value="b"> b) 25 m/s</label>
+                <label class="option"><input type="radio" name="q3" value="c"> c) 5 m/s</label>
+            </div>
+
+            <div class="question-card" id="card-q4">
+                <h3>4. În MRU, valoarea accelerației este întotdeauna:</h3>
+                <label class="option"><input type="radio" name="q4" value="a"> a) a = 0</label>
+                <label class="option"><input type="radio" name="q4" value="b"> b) a > 0</label>
+                <label class="option"><input type="radio" name="q4" value="c"> c) Variabilă</label>
+            </div>
+
+            <div class="question-card" id="card-q5">
+                <h3>5. Formula lui Galilei în MRUV este dată de relația:</h3>
+                <label class="option"><input type="radio" name="q5" value="a"> a) v = v₀ + a · t</label>
+                <label class="option"><input type="radio" name="q5" value="b"> b) x = x₀ + v₀ · t</label>
+                <label class="option"><input type="radio" name="q5" value="c"> c) v² = v₀² + 2a · Δx</label>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn-submit" onclick="verificaTest()">Verifică Răspunsurile</button>
+                <button type="button" class="btn-reset" onclick="reseteazaTest()">Resetează Testul</button>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        const raspunsuriCorecte = { q1: 'c', q2: 'b', q3: 'a', q4: 'a', q5: 'c' };
+
+        function verificaTest() {
+            let scor = 0;
+            for (let key in raspunsuriCorecte) {
+                const card = document.getElementById('card-' + key);
+                const selectat = document.querySelector(`input[name="${key}"]:checked`);
+                if (selectat && selectat.value === raspunsuriCorecte[key]) {
+                    scor++;
+                    card.style.borderColor = '#10b981';
+                    card.style.background = '#064e3b';
+                } else {
+                    card.style.borderColor = '#ef4444';
+                    card.style.background = '#450a0a';
+                }
+            }
+            const nota = scor * 2;
+            document.getElementById('scor-afisat').textContent = `Scor: ${scor} / 5 | Nota: ${nota}`;
+        }
+
+        function reseteazaTest() {
+            document.getElementById('quizForm').reset();
+            for (let key in raspunsuriCorecte) {
+                const card = document.getElementById('card-' + key);
+                card.style.borderColor = '#334155';
+                card.style.background = '#1e293b';
+            }
+            document.getElementById('scor-afisat').textContent = 'Scor: 0 / 5 | Nota: -';
+        }
+    </script>
+</body>
+</html>
